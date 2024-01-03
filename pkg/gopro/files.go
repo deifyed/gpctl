@@ -9,8 +9,6 @@ import (
 )
 
 func ListDirectory(hostAddress string, targetPath string) ([]string, error) {
-	fmt.Printf("targetPath: %s\n", targetPath)
-
 	resp, err := http.Get(fmt.Sprintf("http://%s/gopro/media/list", hostAddress))
 	if err != nil {
 		return nil, fmt.Errorf("calling API: %w", err)
