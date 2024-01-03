@@ -31,3 +31,8 @@ make build && make install PREFIX=/usr/local/bin
 # Uninstall from default location
 make uninstall
 ```
+
+## Sources
+
+- [KonradIT's awesome code](https://github.com/KonradIT/mmt)
+- [Open GoPro's HTTP specification](https://gopro.github.io/OpenGoPro/)
