@@ -66,3 +66,14 @@ func fileInfoAsStrings(fileInfos []fs.FileInfo) []string {
 
 	return result
 }
+
+func ReadFile(hostAddress string, targetPath string) (io.ReadCloser, error) {
+	resp, err := http.Get(fmt.Sprintf("http://%s/videos/DCIM%s", hostAddress, targetPath))
+	if err != nil {
+		return nil, fmt.Errorf("calling API: %w", err)
+	}
+	if resp.StatusCode != http.StatusOK {
+		return nil, fmt.Errorf("API returned non-200 status code: %d", resp.StatusCode)
+	}
+	return resp.Body, nil
+}
