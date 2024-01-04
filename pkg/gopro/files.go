@@ -6,6 +6,7 @@ import (
 	"io"
 	"io/fs"
 	"net/http"
+	"strings"
 )
 
 func ListDirectory(hostAddress string, targetPath string) ([]string, error) {
@@ -76,4 +77,19 @@ func ReadFile(hostAddress string, targetPath string) (io.ReadCloser, error) {
 		return nil, fmt.Errorf("API returned non-200 status code: %d", resp.StatusCode)
 	}
 	return resp.Body, nil
+}
+
+func RemoveFile(hostAddress string, targetPath string) error {
+	targetPath = strings.TrimLeft(targetPath, "/")
+
+	resp, err := http.Get(fmt.Sprintf("http://%s/gopro/media/delete/file?path=%s", hostAddress, targetPath))
+	if err != nil {
+		return fmt.Errorf("calling API: %w", err)
+	}
+
+	if resp.StatusCode != http.StatusOK {
+		return fmt.Errorf("API returned non-200 status code: %d", resp.StatusCode)
+	}
+
+	return nil
 }
