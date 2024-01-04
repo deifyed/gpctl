@@ -17,9 +17,14 @@ gpctl ls /
 
 # Download a file from the device
 gpctl cp /100GOPRO/GX010008.MP4 /home/user/Downloads/awesome-vid.mp4
+
+# Delete a file from the device
+gpctl rm /100GOPRO/GX010008.MP4
 ```
 
 ## Installation
+
+To build the code, you will need to have `Go 1.21` or higher installed.
 
 ```shell
 # Install in default location (~/.local/bin/gpctl)
