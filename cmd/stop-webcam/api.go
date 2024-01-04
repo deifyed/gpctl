@@ -10,6 +10,7 @@ import (
 
 type Options struct {
 	TargetDeviceIndex int
+	ExitWebcamMode    bool
 }
 
 func RunE(opts *Options) func(cmd *cobra.Command, args []string) error {
@@ -22,6 +23,15 @@ func RunE(opts *Options) func(cmd *cobra.Command, args []string) error {
 		err = gopro.StopWebcam(deviceAddress)
 		if err != nil {
 			return fmt.Errorf("starting webcam: %w", err)
+		}
+
+		if !opts.ExitWebcamMode {
+			return nil
+		}
+
+		err = gopro.ExitWebcamMode(deviceAddress)
+		if err != nil {
+			return fmt.Errorf("exiting webcam mode: %w", err)
 		}
 
 		return nil

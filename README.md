@@ -20,6 +20,12 @@ gpctl cp /100GOPRO/GX010008.MP4 /home/user/Downloads/awesome-vid.mp4
 
 # Delete a file from the device
 gpctl rm /100GOPRO/GX010008.MP4
+
+# Start webcam mode
+gpctl webcam start
+
+# Stop webcam mode
+gpctl webcam stop
 ```
 
 ## Installation

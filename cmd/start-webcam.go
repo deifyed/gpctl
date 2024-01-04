@@ -9,7 +9,7 @@ import (
 var startCmdOpts startwebcam.Options
 var startCmd = &cobra.Command{
 	Use:   "start",
-	Short: "Activate webcam mode",
+	Short: "Activate the webcam",
 	RunE:  startwebcam.RunE(&startCmdOpts),
 }
 

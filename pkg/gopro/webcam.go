@@ -30,3 +30,16 @@ func StopWebcam(hostAddress string) error {
 
 	return nil
 }
+
+func ExitWebcamMode(hostAddress string) error {
+	resp, err := http.Get(fmt.Sprintf("http://%s/gopro/webcam/exit", hostAddress))
+	if err != nil {
+		return fmt.Errorf("calling API: %w", err)
+	}
+
+	if resp.StatusCode != http.StatusOK {
+		return fmt.Errorf("API returned non-200 status code: %d", resp.StatusCode)
+	}
+
+	return nil
+}
