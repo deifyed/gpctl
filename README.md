@@ -45,5 +45,6 @@ make uninstall
 
 ## Sources
 
-- [KonradIT's awesome code](https://github.com/KonradIT/mmt)
+- [KonradIT's awesome mmt project](https://github.com/KonradIT/mmt)
+- [jschmid1's awesome gopro_as_webcam_on_linux project](https://github.com/jschmid1/gopro_as_webcam_on_linux)
 - [Open GoPro's HTTP specification](https://gopro.github.io/OpenGoPro/)
