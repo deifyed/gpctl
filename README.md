@@ -21,8 +21,8 @@ gpctl cp /100GOPRO/GX010008.MP4 /home/user/Downloads/awesome-vid.mp4
 # Delete a file from the device
 gpctl rm /100GOPRO/GX010008.MP4
 
-# Start webcam mode
-gpctl webcam start
+# Start webcam mode (must be run with `sudo` and `-u` for now)
+gpctl webcam start -u $USER
 
 # Stop webcam mode
 gpctl webcam stop
