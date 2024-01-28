@@ -5,6 +5,7 @@ import (
 	"fmt"
 
 	"github.com/deifyed/gpctl/pkg/gopro"
+	"github.com/deifyed/gpctl/pkg/v4l2"
 	"github.com/spf13/cobra"
 )
 
@@ -32,6 +33,11 @@ func RunE(opts *Options) func(cmd *cobra.Command, args []string) error {
 		err = gopro.ExitWebcamMode(deviceAddress)
 		if err != nil {
 			return fmt.Errorf("exiting webcam mode: %w", err)
+		}
+
+		err = v4l2.EjectModule()
+		if err != nil {
+			return fmt.Errorf("ejecting v4l2loopback module: %w", err)
 		}
 
 		return nil

@@ -17,4 +17,5 @@ func init() {
 	webcamCmd.AddCommand(startCmd)
 
 	startCmd.Flags().IntVarP(&startCmdOpts.TargetDeviceIndex, "device", "d", 0, "Index of the device to use (default is 0)")
+	startCmd.Flags().StringVarP(&startCmdOpts.Username, "username", "u", "", "Username of the user to expose video device to")
 }
