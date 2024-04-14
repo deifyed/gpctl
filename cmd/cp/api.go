@@ -2,8 +2,11 @@ package cp
 
 import (
 	"context"
+	"errors"
 	"fmt"
+	"os"
 	"path"
+	"path/filepath"
 
 	"github.com/deifyed/gpctl/pkg/gopro"
 	"github.com/spf13/afero"
@@ -31,18 +34,12 @@ func RunE(fs *afero.Afero, opts *Options) func(*cobra.Command, []string) error {
 
 		defer f.Close()
 
-		realDestination := destination
-
-		isDir, err := fs.IsDir(destination)
+		realDestination, err := getRealDestination(fs, source, destination)
 		if err != nil {
-			return fmt.Errorf("checking if directory: %w", err)
+			return fmt.Errorf("getting real destination: %w", err)
 		}
 
-		if isDir {
-			realDestination = path.Join(destination, path.Base(source))
-		}
-
-		err = fs.WriteReader(realDestination, f)
+		err = fs.WriteReader(realDestination[0], f)
 		if err != nil {
 			return fmt.Errorf("writing file %s: %w", destination, err)
 		}
@@ -58,4 +55,27 @@ func getDeviceAddressByIndex(ctx context.Context, index int) (string, error) {
 	}
 
 	return devices[index], nil
+}
+
+func getRealDestination(fs *afero.Afero, source string, destination string) ([]string, error) {
+	var err error
+	realDestination := destination
+
+	if !path.IsAbs(realDestination) {
+		realDestination, err = filepath.Abs(destination)
+		if err != nil {
+			return []string{}, fmt.Errorf("getting absolute destination: %w", err)
+		}
+	}
+
+	isDir, err := fs.IsDir(realDestination)
+	if err != nil && !errors.Is(err, os.ErrNotExist) {
+		return []string{}, fmt.Errorf("checking if destination is directory: %w", err)
+	}
+
+	if isDir {
+		return []string{path.Join(realDestination, path.Base(source))}, nil
+	}
+
+	return []string{realDestination}, nil
 }
