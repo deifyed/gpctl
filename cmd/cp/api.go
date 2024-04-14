@@ -3,6 +3,7 @@ package cp
 import (
 	"context"
 	"fmt"
+	"path"
 
 	"github.com/deifyed/gpctl/pkg/gopro"
 	"github.com/spf13/afero"
@@ -30,7 +31,18 @@ func RunE(fs *afero.Afero, opts *Options) func(*cobra.Command, []string) error {
 
 		defer f.Close()
 
-		err = fs.WriteReader(destination, f)
+		realDestination := destination
+
+		isDir, err := fs.IsDir(destination)
+		if err != nil {
+			return fmt.Errorf("checking if directory: %w", err)
+		}
+
+		if isDir {
+			realDestination = path.Join(destination, path.Base(source))
+		}
+
+		err = fs.WriteReader(realDestination, f)
 		if err != nil {
 			return fmt.Errorf("writing file %s: %w", destination, err)
 		}
