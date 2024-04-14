@@ -27,21 +27,14 @@ func RunE(fs *afero.Afero, opts *Options) func(*cobra.Command, []string) error {
 			return fmt.Errorf("getting device address: %w", err)
 		}
 
-		f, err := gopro.ReadFile(deviceAddress, source)
-		if err != nil {
-			return fmt.Errorf("reading file %s: %w", source, err)
-		}
-
-		defer f.Close()
-
 		realDestination, err := getRealDestination(fs, source, destination)
 		if err != nil {
 			return fmt.Errorf("getting real destination: %w", err)
 		}
 
-		err = fs.WriteReader(realDestination[0], f)
+		err = cp(fs, deviceAddress, source, realDestination[0])
 		if err != nil {
-			return fmt.Errorf("writing file %s: %w", destination, err)
+			return fmt.Errorf("copying file: %w", err)
 		}
 
 		return nil
@@ -78,4 +71,20 @@ func getRealDestination(fs *afero.Afero, source string, destination string) ([]s
 	}
 
 	return []string{realDestination}, nil
+}
+
+func cp(fs *afero.Afero, deviceAddress string, source string, destination string) error {
+	f, err := gopro.ReadFile(deviceAddress, source)
+	if err != nil {
+		return fmt.Errorf("reading file %s: %w", source, err)
+	}
+
+	defer f.Close()
+
+	err = fs.WriteReader(destination, f)
+	if err != nil {
+		return fmt.Errorf("writing file %s: %w", destination, err)
+	}
+
+	return nil
 }
