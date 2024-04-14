@@ -18,6 +18,8 @@ func RunE(opts *Options) func(*cobra.Command, []string) error {
 
 		if len(args) > 0 {
 			targetPath = args[0]
+		} else {
+			fmt.Fprintln(cmd.OutOrStdout(), "No directory specified, using root '/'")
 		}
 
 		deviceAddress, err := getDeviceAddressByIndex(cmd.Context(), opts.TargetDeviceIndex)
