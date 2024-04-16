@@ -2,11 +2,14 @@ package gopro
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"net"
 	"regexp"
 	"time"
 )
+
+var ErrNoDevicesFound = errors.New("no devices found")
 
 // Borrowed with love and modifications from https://github.com/KonradIT/mmt
 var deviceAddressRegexp = regexp.MustCompile(`172.2\d.\d\d\d.5\d`)
@@ -46,6 +49,10 @@ func GetDeviceAddressByIndex(ctx context.Context, index int) (string, error) {
 	devices, err := GetDeviceAddresses(ctx)
 	if err != nil {
 		return "", fmt.Errorf("getting device addresses: %w", err)
+	}
+
+	if len(devices) == 0 {
+		return "", ErrNoDevicesFound
 	}
 
 	return devices[index], nil

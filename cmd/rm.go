@@ -12,6 +12,7 @@ var rmOpts = rm.Options{
 var rmCmd = &cobra.Command{
 	Use:   "rm",
 	Short: "Remove a file or directory on the GoPro",
+	Args:  cobra.ExactArgs(1),
 	RunE:  rm.RunE(&rmOpts),
 }
 
