@@ -9,6 +9,7 @@ import (
 
 	"github.com/deifyed/gpctl/pkg/gopro"
 	"github.com/gobwas/glob"
+	"github.com/schollz/progressbar/v3"
 	"github.com/spf13/afero"
 	"github.com/spf13/cobra"
 )
@@ -32,6 +33,8 @@ func RunE(fs *afero.Afero, opts *Options) func(*cobra.Command, []string) error {
 			return fmt.Errorf("getting real source: %w", err)
 		}
 
+		progressBar := progressbar.Default(int64(len(realSources)))
+
 		for _, sourceItem := range realSources {
 			realDestination, err := getRealDestination(fs, sourceItem, destination)
 			if err != nil {
@@ -42,6 +45,8 @@ func RunE(fs *afero.Afero, opts *Options) func(*cobra.Command, []string) error {
 			if err != nil {
 				return fmt.Errorf("copying file from %s to %s: %w", source, realDestination, err)
 			}
+
+			progressBar.Add(1)
 		}
 
 		return nil
