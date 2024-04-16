@@ -15,6 +15,7 @@ import (
 )
 
 type Options struct {
+	Progressbar       bool
 	TargetDeviceIndex int
 }
 
@@ -33,7 +34,11 @@ func RunE(fs *afero.Afero, opts *Options) func(*cobra.Command, []string) error {
 			return fmt.Errorf("getting real source: %w", err)
 		}
 
-		progressBar := progressbar.Default(int64(len(realSources)))
+		var progressBar progressBarI = &dummyProgressbar{}
+
+		if opts.Progressbar {
+			progressBar = progressbar.Default(int64(len(realSources)))
+		}
 
 		for _, sourceItem := range realSources {
 			realDestination, err := getRealDestination(fs, sourceItem, destination)
@@ -121,3 +126,11 @@ func cp(fs *afero.Afero, deviceAddress string, source string, destination string
 
 	return nil
 }
+
+type progressBarI interface {
+	Add(int) error
+}
+
+type dummyProgressbar struct{}
+
+func (dummyProgressbar) Add(int) error { return nil }

@@ -8,7 +8,7 @@ import (
 var cpOpts cp.Options
 var cpCmd = &cobra.Command{
 	Use:   "cp",
-	Short: "A brief description of your command",
+	Short: "Copies files from a GoPro device to the local machine",
 	Args:  cobra.ExactArgs(2),
 	RunE:  cp.RunE(fs, &cpOpts),
 }
@@ -16,5 +16,6 @@ var cpCmd = &cobra.Command{
 func init() {
 	rootCmd.AddCommand(cpCmd)
 
-	cpCmd.Flags().IntVarP(&lsOpts.TargetDeviceIndex, "device", "d", 0, "Index of the device to use (default is 0)")
+	cpCmd.Flags().IntVarP(&cpOpts.TargetDeviceIndex, "device", "d", 0, "Index of the device to use (default is 0)")
+	cpCmd.Flags().BoolVarP(&cpOpts.Progressbar, "progressbar", "p", true, "Show progressbar (default is true)")
 }
