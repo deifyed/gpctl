@@ -1,7 +1,6 @@
 package rm
 
 import (
-	"context"
 	"fmt"
 
 	"github.com/deifyed/gpctl/pkg/gopro"
@@ -16,7 +15,7 @@ func RunE(opts *Options) func(cmd *cobra.Command, args []string) error {
 	return func(cmd *cobra.Command, args []string) error {
 		targetPath := args[0]
 
-		deviceAddress, err := getDeviceAddressByIndex(cmd.Context(), opts.TargetDeviceIndex)
+		deviceAddress, err := gopro.GetDeviceAddressByIndex(cmd.Context(), opts.TargetDeviceIndex)
 		if err != nil {
 			return fmt.Errorf("getting device address: %w", err)
 		}
@@ -28,13 +27,4 @@ func RunE(opts *Options) func(cmd *cobra.Command, args []string) error {
 
 		return nil
 	}
-}
-
-func getDeviceAddressByIndex(ctx context.Context, index int) (string, error) {
-	devices, err := gopro.GetDeviceAddresses(ctx)
-	if err != nil {
-		return "", fmt.Errorf("getting device addresses: %w", err)
-	}
-
-	return devices[index], nil
 }

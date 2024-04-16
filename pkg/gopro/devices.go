@@ -2,6 +2,7 @@ package gopro
 
 import (
 	"context"
+	"fmt"
 	"net"
 	"regexp"
 	"time"
@@ -39,4 +40,13 @@ func GetDeviceAddresses(ctx context.Context) ([]string, error) {
 	}
 
 	return ipsFound, nil
+}
+
+func GetDeviceAddressByIndex(ctx context.Context, index int) (string, error) {
+	devices, err := GetDeviceAddresses(ctx)
+	if err != nil {
+		return "", fmt.Errorf("getting device addresses: %w", err)
+	}
+
+	return devices[index], nil
 }

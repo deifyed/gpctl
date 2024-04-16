@@ -1,7 +1,6 @@
 package cp
 
 import (
-	"context"
 	"errors"
 	"fmt"
 	"os"
@@ -22,7 +21,7 @@ func RunE(fs *afero.Afero, opts *Options) func(*cobra.Command, []string) error {
 		source := args[0]
 		destination := args[1]
 
-		deviceAddress, err := getDeviceAddressByIndex(cmd.Context(), opts.TargetDeviceIndex)
+		deviceAddress, err := gopro.GetDeviceAddressByIndex(cmd.Context(), opts.TargetDeviceIndex)
 		if err != nil {
 			return fmt.Errorf("getting device address: %w", err)
 		}
@@ -39,15 +38,6 @@ func RunE(fs *afero.Afero, opts *Options) func(*cobra.Command, []string) error {
 
 		return nil
 	}
-}
-
-func getDeviceAddressByIndex(ctx context.Context, index int) (string, error) {
-	devices, err := gopro.GetDeviceAddresses(ctx)
-	if err != nil {
-		return "", fmt.Errorf("getting device addresses: %w", err)
-	}
-
-	return devices[index], nil
 }
 
 func getRealDestination(fs *afero.Afero, source string, destination string) ([]string, error) {

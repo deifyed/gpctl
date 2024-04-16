@@ -1,7 +1,6 @@
 package ls
 
 import (
-	"context"
 	"fmt"
 
 	"github.com/deifyed/gpctl/pkg/gopro"
@@ -22,7 +21,7 @@ func RunE(opts *Options) func(*cobra.Command, []string) error {
 			fmt.Fprintln(cmd.OutOrStdout(), "No directory specified, using root '/'")
 		}
 
-		deviceAddress, err := getDeviceAddressByIndex(cmd.Context(), opts.TargetDeviceIndex)
+		deviceAddress, err := gopro.GetDeviceAddressByIndex(cmd.Context(), opts.TargetDeviceIndex)
 		if err != nil {
 			return fmt.Errorf("getting device address: %w", err)
 		}
@@ -38,13 +37,4 @@ func RunE(opts *Options) func(*cobra.Command, []string) error {
 
 		return nil
 	}
-}
-
-func getDeviceAddressByIndex(ctx context.Context, index int) (string, error) {
-	devices, err := gopro.GetDeviceAddresses(ctx)
-	if err != nil {
-		return "", fmt.Errorf("getting device addresses: %w", err)
-	}
-
-	return devices[index], nil
 }
