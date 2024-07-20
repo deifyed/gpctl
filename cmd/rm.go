@@ -19,5 +19,6 @@ var rmCmd = &cobra.Command{
 func init() {
 	rootCmd.AddCommand(rmCmd)
 
-	rmCmd.Flags().IntVarP(&lsOpts.TargetDeviceIndex, "device", "d", 0, "Index of the device to use (default is 0)")
+	rmCmd.Flags().IntVarP(&rmOpts.TargetDeviceIndex, "device", "d", 0, "Index of the device to use (default is 0)")
+	cpCmd.Flags().BoolVarP(&rmOpts.Progressbar, "progressbar", "p", true, "Show progressbar (default is true)")
 }
